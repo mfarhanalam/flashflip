@@ -1,0 +1,65 @@
+<div class="app-container">
+  <!-- Progress Bar with Percentage -->
+  <div class="progress-container">
+    <div class="stats">
+      <span class="known-stat">👍 {{progressStats.known}} ({{ (progressStats.known / progressStats.total) * 100 | number:'1.0-0' }}%)</span>
+      <span class="unknown-stat">👎 {{progressStats.unknown}} ({{ (progressStats.unknown / progressStats.total) * 100 | number:'1.0-0' }}%)</span>
+    </div>
+    <div class="progress-bar">
+      <div class="progress known" [style.width.%]="(progressStats.known / progressStats.total) * 100"></div>
+      <div class="progress unknown" [style.width.%]="(progressStats.unknown / progressStats.total) * 100"></div>
+    </div>
+  </div>
+
+  <!-- Action Buttons with Icons -->
+  <div class="action-buttons">
+    <button (click)="shuffleCards()" class="btn shuffle-btn">
+      <i class="fas fa-random"></i> Shuffle
+    </button>
+    <button (click)="showAll()" class="btn showall-btn">
+      <i class="fas fa-sync-alt"></i> Reset
+    </button>
+    <button (click)="showUnknown()" class="btn unknown-btn">
+      <i class="fas fa-question-circle"></i> Unknown
+    </button>
+  </div>
+
+  <!-- Flashcards Grid -->
+  <div class="flashcards-grid">
+    <div *ngFor="let card of flashcards" class="card-wrapper">
+      <div class="card-container" [class.flipped]="card.flipped" (click)="toggle(card)">
+        <div class="card">
+          <div class="front">
+            <span class="card-label">Question</span>
+            {{ card.question }}
+          </div>
+          <div class="back">
+            <span class="card-label">Answer</span>
+            {{ card.answer }}
+          </div>
+        </div>
+      </div>
+      <div class="btns">
+        <button class="btn know-btn" (click)="mark(card, true); $event.stopPropagation()">
+          <i class="fas fa-check"></i> Know
+        </button>
+        <button class="btn dontknow-btn" (click)="mark(card, false); $event.stopPropagation()">
+          <i class="fas fa-times"></i> Don't Know
+        </button>
+        <button class="btn remove-btn" (click)="removeCard(card); $event.stopPropagation()">
+          <i class="fas fa-trash"></i> Remove
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Add New Card (Floating Action Button on Mobile) -->
+  <div class="add-card">
+    <h3><i class="fas fa-plus-circle"></i> Add New Flashcard</h3>
+    <input [(ngModel)]="newQuestion" placeholder="Enter question...">
+    <input [(ngModel)]="newAnswer" placeholder="Enter answer...">
+    <button (click)="addCard()" class="btn add-btn">
+      <i class="fas fa-save"></i> Save Card
+    </button>
+  </div>
+</div>
